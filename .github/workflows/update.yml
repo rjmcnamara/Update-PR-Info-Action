@@ -21,16 +21,25 @@ jobs:
         run: |
           echo "start_time=$(date)" >> $GITHUB_OUTPUT
       - uses: rjmcnamara/update-pr-info-action@master
-        if: "!inputs.pull-request-number"
+        if: ${{ ! inputs.pull-request-number }}
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           error-on-fail: "false"
           base-branch-regex: '.*'
           body-template: |
-            - **[🏁 FT IN PROGRESS - `Time Started: ${{ steps.variables.outputs.start_time }}`
+            - **[🏁 `Time Started: ${{ steps.variables.outputs.start_time }}`
           body-update-action: 'suffix'
       - uses: rjmcnamara/update-pr-info-action@master
         if: inputs.pull-request-number
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          error-on-fail: "false"
+          base-branch-regex: '.*'
+          body-template: |
+            - **[🏁 `Time Started: ${{ steps.variables.outputs.start_time }}`
+          pull-request-number: ${{ inputs.pull-request-number }}
+      - uses: rjmcnamara/update-pr-info-action@master
+        if: false && inputs.pull-request-number
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           error-on-fail: "false"
