@@ -1,15 +1,24 @@
 name: "Update Pull Request"
-on: pull_request
+on: 
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      pull-request-number:
+        required: false
+        description: "Override for pull request number"
 
 permissions:
   contents: read
   pull-requests: write
+  issues: write
+  actions: write
 
 jobs:
   update_pr:
     runs-on: ubuntu-latest
     steps:
       - uses: the-wright-jamie/update-pr-info-action@master
+        if: ! inputs.pull-request-number
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           error-on-fail: "false"
@@ -20,3 +29,16 @@ jobs:
             Merging into '%basebranch%'
             [Link to ticket: %headbranch%](https://example.com/%headbranch%)
           body-update-action: "suffix"
+      - uses: the-wright-jamie/update-pr-info-action@master
+        if: inputs.pull-request-number
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          error-on-fail: "false"
+          base-branch-regex: '[a-z\d-_.\\/]+'
+          head-branch-regex: 'go-\d+'
+          title-template: "[%headbranch%]"
+          body-template: |
+            Merging into '%basebranch%'
+            [Link to ticket: %headbranch%](https://example.com/%headbranch%)
+          body-update-action: "suffix"
+          pull-request-number: ${{ inputs.pull-request-number }}
