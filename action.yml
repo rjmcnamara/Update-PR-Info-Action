@@ -64,6 +64,9 @@ inputs:
     description: "Should the matched text from head branch be in the body. This is a check and will not change anything."
     required: false
     default: "true"
+  pull-request-number:
+    description: "Override for pull request number.  Defaults to current PR"
+    required: false
 outputs:
   baseMatch:
     description: "Matched text from base branch, if any"
