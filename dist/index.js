@@ -9944,11 +9944,11 @@ async function run() {
       core.warning("No updates were made to PR title");
     }
 
-    //const body = await octokit.rest.pulls.get({
-    //          owner: github.context.repo.owner,
-    //          repo: github.context.repo.repo,
-    //          pull_number: inputs.pullRequestNumber || github.context.payload.pull_request.number,
-    //        }).data.body || github.context.payload.pull_request.body || '';
+    const pr = await octokit.rest.pulls.get({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              pull_number: inputs.pullRequestNumber || github.context.payload.pull_request.number,
+            });
     const body = github.context.payload.pull_request.body || "";
     const processedBodyText = inputs.bodyTemplate
       .replace(
