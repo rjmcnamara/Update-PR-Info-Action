@@ -37,6 +37,7 @@ jobs:
           base-branch-regex: '.*'
           body-template: |
             - **[🏁 `Time Started: ${{ steps.variables.outputs.start_time }}`
+          body-update-action: 'suffix'
           pull-request-number: ${{ inputs.pull-request-number }}
       - uses: rjmcnamara/update-pr-info-action@master
         if: false && inputs.pull-request-number
