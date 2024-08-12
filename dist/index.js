@@ -9847,8 +9847,14 @@ async function run() {
       headMatch: "",
     };
 
+    const pr = await octokit.rest.pulls.get({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              pull_number: inputs.pullRequestNumber || github.context.payload.pull_request.number,
+            });
     if (matchBaseBranch) {
-      const baseBranchName = github.context.payload.pull_request.base.ref;
+      // const baseBranchName = github.context.payload.pull_request.base.ref;
+      const baseBranchName = pr.base.ref;
       const baseBranch = inputs.lowercaseBranch
         ? baseBranchName.toLowerCase()
         : baseBranchName;
@@ -9872,7 +9878,8 @@ async function run() {
     }
 
     if (matchHeadBranch) {
-      const headBranchName = github.context.payload.pull_request.head.ref;
+      const headBranchName = pr.head.ref;
+      // const headBranchName = github.context.payload.pull_request.head.ref;
       const headBranch = inputs.lowercaseBranch
         ? headBranchName.toLowerCase()
         : headBranchName;
@@ -9904,7 +9911,7 @@ async function run() {
     const upperCase = (upperCase, text) =>
       upperCase ? text.toUpperCase() : text;
 
-    const title = github.context.payload.pull_request.title || "";
+    const title = pr.title || "";
     const processedTitleText = inputs.titleTemplate
       .replace(
         baseTokenRegex,
@@ -9944,12 +9951,7 @@ async function run() {
       core.warning("No updates were made to PR title");
     }
 
-    const pr = await octokit.rest.pulls.get({
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              pull_number: inputs.pullRequestNumber || github.context.payload.pull_request.number,
-            });
-    const body = github.context.payload.pull_request.body || "";
+    const body = pr.data.body || github.context.payload.pull_request?.body || "";
     const processedBodyText = inputs.bodyTemplate
       .replace(
         baseTokenRegex,
