@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: rjmcnamara/update-pr-info-action@master
-        if: ! inputs.pull-request-number
+        if: "!inputs.pull-request-number"
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           error-on-fail: "false"
