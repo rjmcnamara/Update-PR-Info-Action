@@ -9855,7 +9855,7 @@ async function run() {
             });
     if (matchBaseBranch) {
       // const baseBranchName = github.context.payload.pull_request.base.ref;
-      const baseBranchName = pr.base.ref;
+      const baseBranchName = pr.data.base.ref;
       const baseBranch = inputs.lowercaseBranch
         ? baseBranchName.toLowerCase()
         : baseBranchName;
@@ -9879,7 +9879,7 @@ async function run() {
     }
 
     if (matchHeadBranch) {
-      const headBranchName = pr.head.ref;
+      const headBranchName = pr.data.head.ref;
       // const headBranchName = github.context.payload.pull_request.head.ref;
       const headBranch = inputs.lowercaseBranch
         ? headBranchName.toLowerCase()
@@ -9912,7 +9912,7 @@ async function run() {
     const upperCase = (upperCase, text) =>
       upperCase ? text.toUpperCase() : text;
 
-    const title = pr.title || "";
+    const title = pr.data.title || "";
     const processedTitleText = inputs.titleTemplate
       .replace(
         baseTokenRegex,
