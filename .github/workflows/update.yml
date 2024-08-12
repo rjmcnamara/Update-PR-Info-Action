@@ -17,18 +17,18 @@ jobs:
   update_pr:
     runs-on: ubuntu-latest
     steps:
+      - id: variables
+        run: |
+          echo "start_time=$(date)" >> $GITHUB_OUTPUT
       - uses: rjmcnamara/update-pr-info-action@master
         if: "!inputs.pull-request-number"
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           error-on-fail: "false"
-          base-branch-regex: '[a-z\d-_.\\/]+'
-          head-branch-regex: 'go-\d+'
-          title-template: "[%headbranch%]"
+          base-branch-regex: '.*'
           body-template: |
-            Merging into '%basebranch%'
-            [Link to ticket: %headbranch%](https://example.com/%headbranch%)
-          body-update-action: "suffix"
+            - **[🏁 FT IN PROGRESS - `Time Started: ${{ steps.variables.outputs.start_time }}`
+          body-update-action: 'suffix'
       - uses: rjmcnamara/update-pr-info-action@master
         if: inputs.pull-request-number
         with:
