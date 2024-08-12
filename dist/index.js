@@ -9847,6 +9847,7 @@ async function run() {
       headMatch: "",
     };
 
+    const octokit = github.getOctokit(inputs.token);
     const pr = await octokit.rest.pulls.get({
               owner: github.context.repo.owner,
               repo: github.context.repo.repo,
@@ -9993,7 +9994,6 @@ async function run() {
       return;
     }
 
-    const octokit = github.getOctokit(inputs.token);
     const response = await octokit.rest.pulls.update(request);
 
     core.info(`Response: ${response.status}`);
